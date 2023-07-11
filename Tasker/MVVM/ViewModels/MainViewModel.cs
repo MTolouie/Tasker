@@ -1,18 +1,26 @@
 ﻿
+using PropertyChanged;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Tasker.MVVM.Models;
 
 namespace Tasker.MVVM.ViewModels;
 
+[AddINotifyPropertyChangedInterface]
 public class MainViewModel
 {
-    ObservableCollection<Category> Categories { get; set; }
-    ObservableCollection<MyTask> Tasks { get; set; }
+    public ObservableCollection<Category> Categories { get; set; }
+    public ObservableCollection<MyTask> Tasks { get; set; }
 
     public MainViewModel()
     {
         FillData();
+        Tasks.CollectionChanged += Tasks_CollectionChanged;
+    }
+
+    private void Tasks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        UpdateData();
     }
 
     private void FillData()
